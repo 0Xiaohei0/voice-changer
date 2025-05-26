@@ -1,31 +1,36 @@
 import sys
 import os
+
+# Add server directory to Python path
+server_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "server")
+sys.path.append(server_dir)
+
 import numpy as np
 import soundfile as sf
-from Exceptions import WeightDownladException
-from downloader.SampleDownloader import downloadInitialSamples
-from downloader.WeightDownloader import downloadWeight
-from voice_changer.VoiceChangerParamsManager import VoiceChangerParamsManager
-from voice_changer.utils.VoiceChangerParams import VoiceChangerParams
-from voice_changer.VoiceChangerManager import VoiceChangerManager
-from mods.log_control import VoiceChangaerLogger
+from server.Exceptions import WeightDownladException
+from server.downloader.SampleDownloader import downloadInitialSamples
+from server.downloader.WeightDownloader import downloadWeight
+from server.voice_changer.VoiceChangerParamsManager import VoiceChangerParamsManager
+from server.voice_changer.utils.VoiceChangerParams import VoiceChangerParams
+from server.voice_changer.VoiceChangerManager import VoiceChangerManager
+from server.mods.log_control import VoiceChangaerLogger
 from scipy import signal
 
 CONFIG = {
-    "model_dir": "model_dir",
+    "model_dir": "server/model_dir",
     "sample_mode": "production",
-    "content_vec_500": "pretrain/checkpoint_best_legacy_500.pt",
-    "content_vec_500_onnx": "pretrain/content_vec_500.onnx",
+    "content_vec_500": "server/pretrain/checkpoint_best_legacy_500.pt",
+    "content_vec_500_onnx": "server/pretrain/content_vec_500.onnx",
     "content_vec_500_onnx_on": True,
-    "hubert_base": "pretrain/hubert_base.pt",
-    "hubert_base_jp": "pretrain/rinna_hubert_base_jp.pt",
-    "hubert_soft": "pretrain/hubert/hubert-soft-0d54a1f4.pt",
-    "whisper_tiny": "pretrain/whisper_tiny.pt",
-    "nsf_hifigan": "pretrain/nsf_hifigan/model",
-    "crepe_onnx_full": "pretrain/crepe_onnx_full.onnx",
-    "crepe_onnx_tiny": "pretrain/crepe_onnx_tiny.onnx",
-    "rmvpe": "pretrain/rmvpe.pt",
-    "rmvpe_onnx": "pretrain/rmvpe.onnx",
+    "hubert_base": "server/pretrain/hubert_base.pt",
+    "hubert_base_jp": "server/pretrain/rinna_hubert_base_jp.pt",
+    "hubert_soft": "server/pretrain/hubert/hubert-soft-0d54a1f4.pt",
+    "whisper_tiny": "server/pretrain/whisper_tiny.pt",
+    "nsf_hifigan": "server/pretrain/nsf_hifigan/model",
+    "crepe_onnx_full": "server/pretrain/crepe_onnx_full.onnx",
+    "crepe_onnx_tiny": "server/pretrain/crepe_onnx_tiny.onnx",
+    "rmvpe": "server/pretrain/rmvpe.pt",
+    "rmvpe_onnx": "server/pretrain/rmvpe.onnx",
 }
 
 # Initialize logger
@@ -131,7 +136,7 @@ if __name__ == "__main__":
         voice_changer = initialize_voice_changer()
         logger.info("Voice changer initialized successfully")
         voice_changer.update_settings("modelSlotIndex", 4)
-        voice_changer.update_settings("tran", 6)
+        voice_changer.update_settings("tran", 4)
         
         # Example usage with an audio file
         input_file = "test.wav"  # Replace with your input file
@@ -141,4 +146,4 @@ if __name__ == "__main__":
         process_audio_file(voice_changer, input_file, output_file)
         
     except Exception as e:
-        logger.error(f"Failed to process audio: {e}")
+        logger.error(f"Failed to process audio: {e}") 
