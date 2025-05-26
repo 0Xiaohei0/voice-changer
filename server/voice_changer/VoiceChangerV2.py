@@ -279,6 +279,14 @@ class VoiceChangerV2(VoiceChangerIF):
                         offset = -1 * (sola_search_frame + crossfade_frame - sola_offset)
                         end = -1 * (sola_search_frame - sola_offset)
                         sola_buf_org = audio[offset:end]
+                        # Ensure sola_buf_org matches the size of np_prev_strength
+                        if sola_buf_org.shape[0] < self.np_prev_strength.shape[0]:
+                            # Pad sola_buf_org to match np_prev_strength size
+                            pad_size = self.np_prev_strength.shape[0] - sola_buf_org.shape[0]
+                            sola_buf_org = np.pad(sola_buf_org, (0, pad_size), mode='constant')
+                        elif sola_buf_org.shape[0] > self.np_prev_strength.shape[0]:
+                            # Trim sola_buf_org to match np_prev_strength size
+                            sola_buf_org = sola_buf_org[:self.np_prev_strength.shape[0]]
                         self.sola_buffer = sola_buf_org * self.np_prev_strength
                     else:
                         self.sola_buffer = audio[-crossfade_frame:] * self.np_prev_strength

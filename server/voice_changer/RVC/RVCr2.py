@@ -202,7 +202,6 @@ class RVCr2(VoiceChangerModel):
 
         # 入力データ生成
         data = self.generate_input(receivedData, crossfade_frame, sola_search_frame, extra_frame)
-
         audio = data[0]
         pitchf = data[1]
         feature = data[2]
