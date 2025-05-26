@@ -37,6 +37,8 @@ logger = VoiceChangaerLogger.get_instance().getLogger()
 class RVCr2(VoiceChangerModel):
     def __init__(self, params: VoiceChangerParams, slotInfo: RVCModelSlot):
         logger.info("[Voice Changer] [RVCr2] Creating instance ")
+        logger.info("[Voice Changer] [RVCr2] params: %s", params)
+        logger.info("[Voice Changer] [RVCr2] slotInfo: %s", slotInfo)
         self.voiceChangerType = "RVC"
 
         self.deviceManager = DeviceManager.get_instance()

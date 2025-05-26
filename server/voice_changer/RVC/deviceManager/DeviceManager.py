@@ -21,10 +21,8 @@ class DeviceManager(object):
 
     def getDevice(self, id: int):
         if id < 0 or self.gpu_num == 0:
-            if self.mps_enabled is False:
-                dev = torch.device("cpu")
-            else:
-                dev = torch.device("mps")
+            # Always use CPU instead of MPS
+            dev = torch.device("cpu")
         else:
             if id < self.gpu_num:
                 dev = torch.device("cuda", index=id)
